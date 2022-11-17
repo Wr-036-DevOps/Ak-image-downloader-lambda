@@ -11,13 +11,11 @@ terraform {
 provider "aws" {
     region  = "eu-central-1"
     default_tags {
-                tags = {
-                Key = "ita_group"
-                Value = "Wr-36"
-                }   
-            } 
-    # access_key = "my-access-key"
-    # secret_key = "my-secret-key"
+        tags = {
+            Key = "ita_group"
+            Value = "Wr-36"
+        }   
+    }     
 }
 
 
@@ -100,4 +98,9 @@ resource "aws_lambda_function" "image_downloader_lambda" {
     runtime       = "python3.8"
     handler       = "lambda_function.lambda_handler"
     timeout       = 15
+    environment {
+        variables = {
+        bucket_name = aws_s3_bucket.image_bucket.id
+        }
+    }
 }
