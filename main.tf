@@ -40,10 +40,15 @@ resource "aws_iam_role" "Training-lambda_image_downloader_role" {
         ]
     })
 }
-# Attaching S3 access policy to the lambda role
+# Attaching SQS and S3 access policy to the lambda role
 resource "aws_iam_role_policy_attachment" "S3-access-policy" {
     role       = "${aws_iam_role.Training-lambda_image_downloader_role.name}"
     policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "SQSQueue-execution-policy" {
+    role       = "${aws_iam_role.Training-lambda_image_downloader_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
 }
 
 

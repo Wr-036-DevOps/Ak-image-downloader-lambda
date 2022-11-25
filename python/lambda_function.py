@@ -12,7 +12,7 @@ from pathlib import Path
 
 def lambda_handler(event, context):
     # Extracting parameter from the SQS json mesage #Python dictionary
-    data = event['Records'][0]["body"]
+    data = json.loads(event['Records'][0]["body"])
     animal = data["animal"]
     number = int(data['number'])
     print(f"we are downloading {number} pictures of {animal}")
