@@ -15,8 +15,8 @@ pipeline {
 
       stage('TF Init&Plan') {
         steps {
-          sh 'terraform init'
-          sh 'terraform plan'
+          sh '/usr/local/bin/terraform init'
+          sh '/usr/local/bin/terraform plan'
         }      
       }
 
@@ -30,7 +30,7 @@ pipeline {
 
       stage('TF Apply') {
         steps {
-          sh 'terraform apply -input=false'
+          sh '/usr/local/bin/terraform apply -auto-approve'
         }
       }
     } 
