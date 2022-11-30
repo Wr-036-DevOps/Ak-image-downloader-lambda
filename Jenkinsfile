@@ -9,7 +9,7 @@ pipeline {
       stage('fetch_latest_code') {
         steps {
           git branch: 'master',
-              credentialsID: 'b09fb582-bfa5-4fba-8e28-22b35f468fb2', url: 'https://github.com/Wr-036-DevOps/Ak-image-downloader-lambda.git'
+              credentialsid: 'b09fb582-bfa5-4fba-8e28-22b35f468fb2', url: 'https://github.com/Wr-036-DevOps/Ak-image-downloader-lambda.git'
         }
       }
 
