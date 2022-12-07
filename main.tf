@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-    region  = "eu-central-1"
+    region  = var.region
     default_tags {
         tags = {
             Key = "ita_group"
@@ -24,7 +24,7 @@ provider "aws" {
 # Creating IAM Role for lambda function
 
 resource "aws_iam_role" "Training-lambda_image_downloader_role" {
-    name = "Training-lambda_image_downloader_role"
+    name = "Training-lambdaa_image_downloader_role"
     permissions_boundary  = "arn:aws:iam::536460581283:policy/boundaries/CustomPowerUserBound"
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
@@ -58,6 +58,7 @@ resource "aws_iam_role_policy_attachment" "SQSQueue-execution-policy" {
 
 resource "aws_s3_bucket" "image_bucket" {
     bucket_prefix = "lambda-images"
+    force_destroy = true
 }
 # Making the S3 Bucket public
 resource "aws_s3_bucket_public_access_block" "example" {
@@ -98,7 +99,7 @@ data "archive_file" "init" {
 
 resource "aws_lambda_function" "image_downloader_lambda" {
     filename      = "deployment_package.zip"
-    function_name = "image-downloader"
+    function_name = var.function_name
     role          = aws_iam_role.Training-lambda_image_downloader_role.arn
     runtime       = "python3.8"
     handler       = "lambda_function.lambda_handler"
