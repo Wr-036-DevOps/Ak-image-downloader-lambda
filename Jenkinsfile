@@ -17,6 +17,7 @@ pipeline {
         steps {
           sh '/usr/local/bin/test/go test -v terraform_infr_test.go -timeout 30m'
         }
+      }
 
       stage('Terraform Init & Plan') {
         steps {
@@ -40,4 +41,4 @@ pipeline {
       }
     } 
   }
-}
+
