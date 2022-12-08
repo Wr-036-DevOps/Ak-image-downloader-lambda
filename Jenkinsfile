@@ -4,7 +4,14 @@ pipeline {
         label "master"
       } 
     }
-
+    //Setting my default path
+    environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+    }
+    //Ensuring go is installed 
+    tools {go '1.19'}
+    
+    
     stages {
       stage('Getting Updates') {
         steps {
@@ -15,12 +22,17 @@ pipeline {
 
       stage('Testing') {
         steps {
-          sh '/usr/local/bin/test/go test -v terraform_infr_test.go -timeout 30m'
+          sh 'pwd'
+          sh '''
+              cd ./test && pwd
+              go test -v terraform_infr_test.go -timeout 30m
+            '''
         }
       }
 
       stage('Terraform Init & Plan') {
         steps {
+          sh 'cd ..'    
           sh '/usr/local/bin/terraform init'
           sh '/usr/local/bin/terraform plan'
         }      
