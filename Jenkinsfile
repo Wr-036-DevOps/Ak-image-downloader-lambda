@@ -15,6 +15,7 @@ pipeline {
     stages {
       stage('Getting Updates') {
         steps {
+          sh '/usr/local/bin/terraform destroy -auto-approve'
           git branch: 'main',
               credentialsId: 'b09fb582-bfa5-4fba-8e28-22b35f468fb2', url: 'https://github.com/Wr-036-DevOps/Ak-image-downloader-lambda.git'
         }
@@ -40,8 +41,8 @@ pipeline {
 
       stage('Approve Deployment') {
         steps {
-          script {
-            def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
+            script {
+                def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
           }
         }
       }
@@ -51,6 +52,21 @@ pipeline {
           sh '/usr/local/bin/terraform apply -auto-approve'
         }
       }
+      
+      stage('Terraform Destroy') {
+        steps {
+            script {
+                def userInput = input(id: 'confirm', message: 'Destroy Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Destory terraform', name: 'confirm destroy'] ])
+                    if (userInput == true) {
+                        sh '/usr/local/bin/terraform destroy -auto-approve'
+                    }
+                    else {
+                        sh "echo 'Terraform destroy denied'"
+                    }
+                }
+            }
+        }
+      
     } 
   }
 
