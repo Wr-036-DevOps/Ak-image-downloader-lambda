@@ -15,7 +15,6 @@ pipeline {
     stages {
       stage('Getting Updates') {
         steps {
-          sh '/usr/local/bin/terraform destroy -auto-approve'
           git branch: 'main',
               credentialsId: 'b09fb582-bfa5-4fba-8e28-22b35f468fb2', url: 'https://github.com/Wr-036-DevOps/Ak-image-downloader-lambda.git'
         }
@@ -23,9 +22,8 @@ pipeline {
 
       stage('Testing') {
         steps {
-          sh 'pwd'
           sh '''
-              cd ./test && pwd
+              cd ./test 
               go test -v terraform_infr_test.go -timeout 30m
             '''
         }
