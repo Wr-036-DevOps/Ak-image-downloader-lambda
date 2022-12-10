@@ -10,15 +10,6 @@ pipeline {
     }
     //Ensuring go is installed 
     tools {go '1.19'}
-    
-    
-    stages {
-      stage('Getting Updates') {
-        steps {
-          git branch: 'main',
-              credentialsId: 'b09fb582-bfa5-4fba-8e28-22b35f468fb2', url: 'https://github.com/Wr-036-DevOps/Ak-image-downloader-lambda.git'
-        }
-      }
 
       stage('Testing') {
         steps {
