@@ -10,7 +10,9 @@ pipeline {
     }
     //Ensuring go is installed 
     tools {go '1.19'}
-
+    
+    
+    stages {
       stage('Testing') {
         steps {
           sh '''
