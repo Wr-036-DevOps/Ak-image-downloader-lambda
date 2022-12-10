@@ -44,3 +44,33 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': f"Upload succeeded: Upload to Amazon S3 bucket {bucket_name} complete"
     }
+
+
+
+
+
+# import discord
+# from discord.ext import commands
+# import os
+# from googleapiclient.discovery import build
+# from google_images_download import google_images_download
+# import random
+# from dotenv import load_dotenv
+# load_dotenv() # this loads the .env file with our credentials
+# #api_key - api key (google custom search api)
+# #search_id - Programmable Search Engine id
+# #token_id - discord bot token
+# client = commands.Bot(command_prefix="$", intents=discord.Intents.all())
+# @client.event
+# async def on_ready():
+# 	print("Bot Is Online\n")
+# @client.command(aliases=["show"])
+# async def showpic(ctx,*,search):
+# 	ran = random.randint(0, 9)
+# 	resourse = build("customsearch", "v1", developerKey=(os.getenv('api_key'))).cse()
+# 	result = resourse.list(q=f"{search}", cx=(os.getenv('search_id')), searchType="image").execute()
+# 	url = result["items"][ran]["link"]
+# 	embed1 = discord.Embed(title=f"Here Your Image ({search}) ")
+# 	embed1.set_image(url=url)
+# 	await ctx.send(embed=embed1)
+# client.run(os.getenv('token_id'))
