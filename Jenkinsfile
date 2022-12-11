@@ -27,15 +27,9 @@ pipeline {
           sh 'cd ..'    
           sh '/usr/local/bin/terraform init'
           sh '/usr/local/bin/terraform plan'
-        }      
-      }
-
-      stage('Approve Deployment') {
-        steps {
-            script {
+          script {
                 def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
-          }
-        }
+        }      
       }
 
       stage('Terraform Apply') {
