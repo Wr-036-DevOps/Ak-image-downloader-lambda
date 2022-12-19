@@ -17,7 +17,7 @@ pipeline {
         steps {
           sh '''
               cd ./test 
-              go test -v terraform_infr_test.go -timeout 30m
+              go test -v terraform_infr_test.go -timeout 2m
             '''
         }
       }
