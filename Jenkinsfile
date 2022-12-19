@@ -29,7 +29,8 @@ pipeline {
           sh '/usr/local/bin/terraform plan'
           script {
                 def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
-        }      
+          }      
+        }
       }
 
       stage('Terraform Apply') {
@@ -40,18 +41,17 @@ pipeline {
       
       stage('Terraform Destroy') {
         steps {
-            script {
-                def userInput = input(id: 'confirm', message: 'Destroy Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Destory terraform', name: 'confirm destroy'] ])
-                    if (userInput == true) {
-                        sh '/usr/local/bin/terraform destroy -auto-approve'
-                    }
-                    else {
-                        sh "echo 'Terraform destroy denied'"
-                    }
+          script {
+            def userInput = input(id: 'confirm', message: 'Destroy Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Destory terraform', name: 'confirm destroy'] ])
+              if (userInput == true) {
+                sh '/usr/local/bin/terraform destroy -auto-approve'
                 }
-            }
+              else {
+                sh "echo 'Terraform destroy denied'"
+              }
+          }
         }
-      
+      }
     } 
   }
 
