@@ -18,13 +18,9 @@ provider "aws" {
     }     
 }
 
-
-
-
 # Creating IAM Role for lambda function
-
 resource "aws_iam_role" "Training-lambda_image_downloader_role" {
-    name = "Training-lambdaa_image_downloader_role"
+    name = "Training-lambda_image_downloader_role"
     permissions_boundary  = "arn:aws:iam::536460581283:policy/boundaries/CustomPowerUserBound"
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
@@ -36,67 +32,37 @@ resource "aws_iam_role" "Training-lambda_image_downloader_role" {
                 Principal = {
                     Service = "lambda.amazonaws.com"
                 }
-            },
+            }
         ]
     })
 }
-# Attaching SQS and S3 access policy to the lambda role
+
+# Attaching S3 access policy to the lambda role
 resource "aws_iam_role_policy_attachment" "S3-access-policy" {
     role       = "${aws_iam_role.Training-lambda_image_downloader_role.name}"
     policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
+# Attaching SQS access policy to the lambda role
 resource "aws_iam_role_policy_attachment" "SQSQueue-execution-policy" {
     role       = "${aws_iam_role.Training-lambda_image_downloader_role.name}"
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
 }
 
-
-
-
 # Creating Public S3 Bucket for downladed images
-
 resource "aws_s3_bucket" "image_bucket" {
-    bucket_prefix = "lambda-images"
+    bucket = "wr-36-animal-images"
     force_destroy = true
 }
-# Making the S3 Bucket public
-resource "aws_s3_bucket_public_access_block" "example" {
-    bucket = "${aws_s3_bucket.image_bucket.id}"
-    block_public_policy = false
-    
-}
-# Attaching S3 Bucket Policy to allow public access to the objects
-resource "aws_s3_bucket_policy" "Public_access" {
-    bucket = aws_s3_bucket.image_bucket.id
-    policy = <<EOF
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Effect": "Allow",
-			"Principal": "*",
-			"Action": "s3:GetObject",
-			"Resource": "${aws_s3_bucket.image_bucket.arn}/*"
-        
-		}
-	]
-}
-EOF
-}
-
 
 # Creating Lambda Function archive/zip file 
-
 data "archive_file" "init" {
     type        = "zip"
     source_dir  = "${path.module}/python"
     output_path = "${path.module}/deployment_package.zip"
-
 }
 
 # Creating Lambda function
-
 resource "aws_lambda_function" "image_downloader_lambda" {
     filename      = "deployment_package.zip"
     function_name = var.function_name
@@ -109,4 +75,9 @@ resource "aws_lambda_function" "image_downloader_lambda" {
         bucket_name = aws_s3_bucket.image_bucket.id
         }
     }
+}
+
+resource "aws_lambda_event_source_mapping" "example" {
+    event_source_arn = "arn:aws:sqs:eu-central-1:536460581283:akaque"
+    function_name    = aws_lambda_function.image_downloader_lambda.arn
 }

@@ -51,7 +51,7 @@ func TestTerraformLambda(t *testing.T) {
 	x := &Message{
 		Records: []Record{
 			{
-				Body: `{"animal": "cat", "number": "1"}`,
+				Body: `{"animal": "squirrel", "number": "1"}`,
 			},
 		},
 	}
