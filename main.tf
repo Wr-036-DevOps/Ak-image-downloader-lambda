@@ -77,7 +77,7 @@ resource "aws_lambda_function" "image_downloader_lambda" {
     }
 }
 
-resource "aws_lambda_event_source_mapping" "example" {
-    event_source_arn = "arn:aws:sqs:eu-central-1:536460581283:akaque"
-    function_name    = aws_lambda_function.image_downloader_lambda.arn
-}
+# resource "aws_lambda_event_source_mapping" "example" {
+#     event_source_arn = "arn:aws:sqs:eu-central-1:536460581283:akaque"
+#     function_name    = aws_lambda_function.image_downloader_lambda.arn
+# }
