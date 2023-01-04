@@ -51,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "SQSQueue-execution-policy" {
 
 # Creating Public S3 Bucket for downladed images
 resource "aws_s3_bucket" "image_bucket" {
-    bucket_bucket_prefix = "wr-36-animal-images"
+    bucket_prefix = "wr-36-animal-images"
     force_destroy = true
 }
 
