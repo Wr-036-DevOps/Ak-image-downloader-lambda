@@ -23,7 +23,7 @@ pipeline {
 
       stage('Terraform Apply') {
         steps {
-          sh '/usr/local/bin/terraform apply -auto-approve'
+          sh '/usr/bin/terraform apply -auto-approve'
         }
       }     
     } 
