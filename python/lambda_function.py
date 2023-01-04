@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     downloader.download(f"{animal}", limit=number, output_dir='/tmp/dataset/', adult_filter_off=True, force_replace=False, timeout=60)
 
 
-    bucket_name = "wr-36-animal-images"
+    bucket_name = os.environ['bucket_name']
     path = f"/tmp/dataset/{animal}/"
     client = boto3.client("s3")
 
